@@ -1,5 +1,7 @@
 # import necessary libraries
 import os
+import sys
+import timeit
 import json
 from PyPDF2 import PdfReader
 from multiprocessing import Pool
@@ -9,7 +11,7 @@ from utils import download, fetch, loader, logger
 PATH = os.path.dirname(os.path.abspath('__file__'))
 
 
-def multiprocessing_module(*args):
+def start_extraction(*args):
     url, page_count = args[0][0], args[0][1]
     if download.download_file(url, PATH):
         reader = PdfReader(url.split("/")[-1])
@@ -53,21 +55,40 @@ def multiprocessing_module(*args):
 
 def main():
     try:
+        start_time = timeit.default_timer()
         json_data = loader.load_json('config.json')
         urls = json_data['urls']
 
         with open('output.json', 'w') as f:
             f.write(r"")
 
-        # final_dict = {}
-        with Pool() as pool:
-            results = pool.map(multiprocessing_module, list([
-                (url, json_data['page_count'])
-                for url in urls
-            ]))
+        if len(sys.argv) == 2:
+            if sys.argv[1] == 'multiprocessing':
+                final_result = {}
+                with Pool() as pool:
+                    results = pool.map(start_extraction, list([
+                        (url, json_data['page_count'])
+                        for url in urls
+                    ]))
+
+                for result in results:
+                    key_name = list(result.keys())[0]
+                final_result[key_name] = result[key_name]
+            else:
+                print("No Such Option!")
+                return
+        else:
+            final_result = {}
+            for url in urls:
+                result = start_extraction((url, json_data['page_count']))
+                final_result[url] = result[url]
 
         with open("output.json", 'w') as f:
-            json.dump(results, f, indent=4)
+            json.dump(final_result, f, indent=4)
+
+        elapsed_time = timeit.default_timer() - start_time
+        logger.log_message(
+            message=f"Elapsed Time: {elapsed_time} seconds", level=0)
     except Exception as e:
         logger.log_message(e, level=1)
 
