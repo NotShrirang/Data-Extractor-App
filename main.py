@@ -11,7 +11,12 @@ from utils import download, fetch, loader, logger
 PATH = os.path.dirname(os.path.abspath('__file__'))
 
 
-def start_extraction(*args):
+def start_extraction(*args) -> dict[str, list]:
+    """Function for downloading and extracting data from PDF
+
+    Returns:
+        dict: extracted data
+    """
     url, page_count = args[0][0], args[0][1]
     if download.download_file(url, PATH):
         reader = PdfReader(url.split("/")[-1])
@@ -54,6 +59,7 @@ def start_extraction(*args):
 
 
 def main():
+    # Main Function
     try:
         start_time = timeit.default_timer()
         json_data = loader.load_json('config.json')
@@ -62,8 +68,10 @@ def main():
         with open('output.json', 'w') as f:
             f.write(r"")
 
+        # Check for command lien arguments
         if len(sys.argv) == 2:
             if sys.argv[1] == 'multiprocessing':
+                # if 'multiprocessing' is present use multiprocessing
                 final_result = {}
                 with Pool() as pool:
                     results = pool.map(start_extraction, list([
@@ -75,14 +83,17 @@ def main():
                     key_name = list(result.keys())[0]
                 final_result[key_name] = result[key_name]
             else:
+                # Else print
                 print("No Such Option!")
                 return
         else:
+            # If command line arguments are not found, use iterative method.
             final_result = {}
             for url in urls:
                 result = start_extraction((url, json_data['page_count']))
                 final_result[url] = result[url]
 
+        # Dump results in json file
         with open("output.json", 'w') as f:
             json.dump(final_result, f, indent=4)
 
