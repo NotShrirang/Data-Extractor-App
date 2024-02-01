@@ -7,6 +7,7 @@ This Python script is designed to extract structured data from PDF files contain
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Configuration](#configuration)
 
 ## Prerequisites
 
