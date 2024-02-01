@@ -1,4 +1,4 @@
-# News Web Scraper
+# Data Extractor App
 
 This Python script is designed to extract structured data from PDF files containing information such as Company Identification Number (CIN), email addresses, PAN (Permanent Account Number), phone numbers, dates, and websites. The script utilizes the PyPDF2 library for PDF processing and multiprocessing for efficient extraction from multiple PDFs.
 
