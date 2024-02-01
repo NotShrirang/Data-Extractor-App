@@ -52,3 +52,27 @@ def get_pan(text: str) -> list:
         list: list of PANs found in the `text`
     """
     return re.findall(r'[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}', text)
+
+
+def get_dates(text: str) -> list:
+    """Function to get dates present in the `text`
+
+    Args:
+        text (str): text to be searched
+
+    Returns:
+        list: list of dates found in the `text`
+    """
+    return re.findall(r'\d{2}[-/.]\d{2}[-/.]\d{4}', text)
+
+
+def get_websites(text: str) -> list:
+    """Function to get websites present in the `text`
+
+    Args:
+        text (str): text to be searched
+
+    Returns:
+        list: list of websites found in the `text`
+    """
+    return re.findall(r'www.[a-z0-9.]+.[a-z0-9]+', text)
