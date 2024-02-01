@@ -26,7 +26,7 @@ def download_file(url: str, dir: str) -> bool:
         driver.get(url)
 
         # Wait till elements are loaded and then click the element.
-        WebDriverWait(driver, 1).until(EC.element_to_be_clickable(
+        WebDriverWait(driver, 2).until(EC.element_to_be_clickable(
             (By.XPATH, r"/html/body/pdf-viewer/viewer-toolbar/div/div[3]/viewer-download-controls/cr-icon-button"))).click()
         driver.close()
         logger.log_message("Success", level=0)
