@@ -46,7 +46,12 @@ This Python script is designed to extract structured data from PDF files contain
    python main.py
    ```
 
-3. The extracted data will be saved as `output.json` in the project directory.
+   To run with `multiprocessing`:
+   ```bash
+   python main.py multiprocessing
+   ```
+
+4. The extracted data will be saved as `output.json` in the project directory.
 
 ## Configuration
 
